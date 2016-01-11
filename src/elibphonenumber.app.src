@@ -1,11 +1,12 @@
 {application, elibphonenumber,
  [
-  {description, "Port driver for libphonenumber"},
+  {application, "Port driver for libphonenumber"},
+  {description, "A port driver for libphonenumber"},
   {vsn, git},
   {registered, []},
   {applications, [
-                  kernel,
-                  stdlib
-                 ]},
+    kernel,
+    stdlib
+  ]},
   {env, []}
- ]}.
+]}.

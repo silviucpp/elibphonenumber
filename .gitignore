@@ -2,7 +2,6 @@
 *.o
 *.so
 .eunit
-ebin
 edoc-info
 erlang.png
 index.html
@@ -14,7 +13,8 @@ phonenumber_util.html
 stylesheet.css
 /.idea/
 /priv/
-/deps/
 *.iml
 *.cproject
 *.project
+_build
+.rebar/

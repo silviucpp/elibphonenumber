@@ -1,6 +1,6 @@
 -module(phonenumber).
 
--include("../include/libphonenumber.hrl").
+-include("include/libphonenumber.hrl").
 
  -export([
     new/0,

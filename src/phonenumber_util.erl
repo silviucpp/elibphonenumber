@@ -42,7 +42,7 @@
 
 -on_load(init/0).
 
--include("../include/libphonenumber.hrl").
+-include("include/libphonenumber.hrl").
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% local functions:
