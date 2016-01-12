@@ -36,7 +36,7 @@ CFLAGS += -fPIC -I $(ERTS_INCLUDE_DIR) -I $(ERL_INTERFACE_INCLUDE_DIR)
 CXXFLAGS += -fPIC -I $(ERTS_INCLUDE_DIR) -I $(ERL_INTERFACE_INCLUDE_DIR)
 
 LDLIBS += -L $(ERL_INTERFACE_LIB_DIR) -lerl_interface -lei 
-LDFLAGS += -shared -lstdc++ -l:libphonenumber.a -lboost_system -lboost_thread -lboost_date_time -licui18n -licuuc -lprotobuf
+LDFLAGS += -shared -lstdc++ -l:libphonenumber.so -lboost_system -lboost_thread -lboost_date_time -licui18n -licuuc -lprotobuf
 
 # Verbosity.
 
