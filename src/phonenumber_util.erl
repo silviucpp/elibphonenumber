@@ -40,23 +40,12 @@
     is_number_match_with_one_string/2
     ]).
 
--export([load_nif/0]).
-
 -on_load(init/0).
 
 -include("../include/libphonenumber.hrl").
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% local functions:
-
-load_nif() ->
-    case erlang:system_info(smp_support) of
-        true ->
-            SoName = filename:join(priv_dir(), ?MODULE),
-            erlang:load_nif(filename:absname(SoName)++"_nif", 0);
-        false ->
-            error(no_smp_support)
-    end.
 
 init() ->
     case erlang:system_info(smp_support) of
