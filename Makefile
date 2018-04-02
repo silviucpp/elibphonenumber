@@ -1,7 +1,19 @@
+all: build-so build-ebin
 
-compile:
-	@./build_deps.sh $(TAG)
+distclean:
+	rm -rf deps
+	@make -C c_src clean
+	@rebar clean
+
+build-so:
+	@./build_deps.sh v8.9.1
 	@make V=0 -C c_src -j 8
 
-clean:
-	@make -C c_src clean
+build-ebin:
+	@rebar get-deps
+	@rebar compile
+
+tests:
+	@rebar eunit
+
+.PHONY: distclean build-so build-ebin tests compile clean

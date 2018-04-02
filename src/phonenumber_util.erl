@@ -40,12 +40,23 @@
     is_number_match_with_one_string/2
     ]).
 
+-export([load_nif/0]).
+
 -on_load(init/0).
 
 -include("../include/libphonenumber.hrl").
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% local functions:
+
+load_nif() ->
+    case erlang:system_info(smp_support) of
+        true ->
+            SoName = filename:join(priv_dir(), ?MODULE),
+            erlang:load_nif(filename:absname(SoName)++"_nif", 0);
+        false ->
+            error(no_smp_support)
+    end.
 
 init() ->
     case erlang:system_info(smp_support) of
@@ -61,7 +72,7 @@ init() ->
     end.
 
 priv_dir() ->
-    case code:priv_dir(libphonenumber) of
+    case code:priv_dir(elibphonenumber) of
         PrivDir when is_list(PrivDir) ->
             PrivDir;
         {error, bad_name} ->
