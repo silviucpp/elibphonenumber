@@ -3,18 +3,9 @@ elibphonenumber
 
 Erlang port of [libphonenumber][1]
 
-## Notes
+##### Note
 
-- This project is active. I'm doing updates very offen because I see the original author is no longer maintaining it.
-- Compatible with both `rebar` and `rebar3`
-- To change the `libphonenumber` version modify in `rebar.config` the `TAG` argument sent to `make`
-
-## Compile
-
-In order to compile you need to make sure all dependencies needed to build `libphonenumber` are already installed.
-
-Next you can find a resume for each operating system where library was tested but in case you encounter problems you can 
-consult as well the documentation from building `libphonenumber` located [here][2]
+1. `libphonenumber` version is given in makefile
 
 ##### Ubuntu
 
@@ -23,20 +14,7 @@ On the latest versions it's enough to do:
 ```bash
 sudo apt-get install cmake cmake-curses-gui libgtest-dev libre2-dev libicu-dev 
 sudo apt-get install libboost-dev libboost-thread-dev libboost-system-dev
-sudo apt-get install libprotobuf-dev protobuf-compiler
-```
-
-In case you are using `Ubuntu 14.04` also follow the following steps in order to install `libre` and `cmake-3`:
-
-```bash
-sudo apt-get remove cmake cmake-data
-sudo -E add-apt-repository -y ppa:george-edison55/cmake-3.x
-sudo -E apt-get update
-sudo apt-get install cmake
-
-wget http://mt.archive.ubuntu.com/ubuntu/pool/universe/r/re2/libre2-1_20140304+dfsg-2_amd64.deb -O libre2-1.deb
-wget http://es.archive.ubuntu.com/ubuntu/pool/universe/r/re2/libre2-dev_20140304+dfsg-2_amd64.deb -O libre2-dev.deb
-sudo dpkg -i libre2*.deb
+sudo apt-get install libprotobuf-dev protobuf-compiler pkg-config
 ```
 
 ##### Mac Os
@@ -50,13 +28,4 @@ In order to do this make sure the application is started then use `phonenumber_t
 ```erlang 
 application:ensure_all_started(elibphonenumber).
 phonenumber_to_carrier:carrier_for_number(<<"44743655551">>, <<"en">>).
-```    
-
-## Run the tests
-
-```bash
-rebar compile eunit
 ```
-
-[1]: https://github.com/googlei18n/libphonenumber
-[2]: https://github.com/googlei18n/libphonenumber/blob/master/cpp/README
