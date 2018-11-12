@@ -6,7 +6,7 @@ distclean:
 	@rebar clean
 
 build-so:
-	@./build_deps.sh v8.9.2
+	@./build_deps.sh v8.9.16
 	@make V=0 -C c_src -j 8
 
 build-ebin:
