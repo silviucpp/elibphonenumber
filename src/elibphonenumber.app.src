@@ -1,6 +1,6 @@
 {application, elibphonenumber, [
     {description, "Port driver for libphonenumber"},
-    {vsn, "8.4.1"},
+    {vsn, "8.9.16"},
     {registered, []},
     {applications, [kernel, stdlib, trie]},
     {mod, {elibphonenumber, []}},
