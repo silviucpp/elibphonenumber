@@ -1,6 +1,6 @@
-.DEFAULT_GOAL = release
+.DEFAULT_GOAL = compile
 
-release:: build-so build-ebin
+compile:: build-so build-ebin
 
 all: build-so build-ebin
 
