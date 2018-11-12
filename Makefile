@@ -1,3 +1,7 @@
+.DEFAULT_GOAL = release
+
+release:: build-so build-ebin
+
 all: build-so build-ebin
 
 distclean:
