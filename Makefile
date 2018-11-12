@@ -1,23 +1,18 @@
-.DEFAULT_GOAL = compile
+.DEFAULT_GOAL := compile
 
-compile:: build-so build-ebin
+REBAR=rebar
 
-all: build-so build-ebin
-
-distclean:
-	rm -rf deps
-	@make -C c_src clean
-	@rebar clean
-
-build-so:
-	@./build_deps.sh v8.9.16
+nif_compile:
+	@./build_deps.sh $(DRIVER_REV)
 	@make V=0 -C c_src -j 8
 
-build-ebin:
-	@rebar get-deps
-	@rebar compile
+nif_clean:
+	rm -rf deps
+	@make -C c_src clean
 
-tests:
-	@rebar eunit
+compile:
+	${REBAR} compile
 
-.PHONY: distclean build-so build-ebin tests compile clean
+clean:
+	${REBAR} clean
+
