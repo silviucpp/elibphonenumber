@@ -2,7 +2,7 @@
     {description, "Port driver for libphonenumber"},
     {licenses, ["Apache"]},
     {links,[{"Github","https://github.com/silviucpp/elibphonenumber"}]},
-    {vsn, "8.12.2"},
+    {vsn, "8.12.4"},
     {registered, []},
     {applications, [
         kernel,
