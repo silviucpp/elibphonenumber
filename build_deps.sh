@@ -43,7 +43,7 @@ qmake_darwin()
 {
     ICU_PATH=/usr/local/Cellar/icu4c
     CMD_VERSION=`ls ${ICU_PATH}`
-    ICU_VERSION=`echo $CMD_VERSION | awk '{print $0}'`
+    ICU_VERSION=`echo $CMD_VERSION | awk '{print $1}'`
 
     echo "ICU_PATH=${ICU_PATH}"
     echo "ICU_VERSION=${ICU_VERSION}"
