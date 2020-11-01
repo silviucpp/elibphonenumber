@@ -4,6 +4,9 @@ matrix:
   include:
     - os: linux
       dist: xenial
+      otp_release: 23.0
+    - os: linux
+      dist: xenial
       otp_release: 22.3
     - os: linux
       dist: xenial

@@ -28,11 +28,15 @@ function fail_check
 
 qmake_unix()
 {
-	fail_check cmake -DCMAKE_INSTALL_PREFIX:PATH=install \
-                     -DUSE_BOOST=ON \
-                     -DUSE_RE2=OFF \
-                     -DUSE_ICU_REGEXP=ON \
-                     ..
+	fail_check cmake \
+        -DCMAKE_C_FLAGS="-fPIC" \
+        -DCMAKE_CXX_FLAGS="-fPIC -std=c++11 " \
+        -DCMAKE_INSTALL_PREFIX:PATH=install \
+        -DUSE_BOOST=ON \
+        -DUSE_RE2=OFF \
+        -DUSE_ICU_REGEXP=ON \
+        -DREGENERATE_METADATA=OFF \
+        ..
 }
 
 qmake_darwin()
@@ -44,17 +48,20 @@ qmake_darwin()
     echo "ICU_PATH=${ICU_PATH}"
     echo "ICU_VERSION=${ICU_VERSION}"
 
-	fail_check cmake -DCMAKE_INSTALL_PREFIX:PATH=install \
-	      -DUSE_BOOST=OFF \
-	      -DUSE_RE2=OFF \
-	      -DUSE_ICU_REGEXP=ON \
-          -DICU_UC_INCLUDE_DIR=${ICU_PATH}/${ICU_VERSION}/include/ \
-          -DICU_UC_LIB=${ICU_PATH}/${ICU_VERSION}/lib/libicuuc.dylib \
-          -DICU_I18N_INCLUDE_DIR=${ICU_PATH}/${ICU_VERSION}/include/ \
-          -DICU_I18N_LIB=${ICU_PATH}/${ICU_VERSION}/lib/libicui18n.dylib \
-          -DGTEST_SOURCE_DIR=../../../googletest/googletest/ \
-          -DGTEST_INCLUDE_DIR=../../../googletest/googletest/include/ \
-    ..
+	fail_check cmake \
+        -DCMAKE_CXX_FLAGS="-std=c++11 " \
+        -DCMAKE_INSTALL_PREFIX:PATH=install \
+	    -DUSE_BOOST=OFF \
+	    -DUSE_RE2=OFF \
+	    -DUSE_ICU_REGEXP=ON \
+	    -DREGENERATE_METADATA=OFF \
+        -DICU_UC_INCLUDE_DIR=${ICU_PATH}/${ICU_VERSION}/include/ \
+        -DICU_UC_LIB=${ICU_PATH}/${ICU_VERSION}/lib/libicuuc.dylib \
+        -DICU_I18N_INCLUDE_DIR=${ICU_PATH}/${ICU_VERSION}/include/ \
+        -DICU_I18N_LIB=${ICU_PATH}/${ICU_VERSION}/lib/libicui18n.dylib \
+        -DGTEST_SOURCE_DIR=../../../googletest/googletest/ \
+        -DGTEST_INCLUDE_DIR=../../../googletest/googletest/include/ \
+        ..
 }
 
 install_libphonenumber()
@@ -66,9 +73,6 @@ install_libphonenumber()
 
 	mkdir -p ${DESTINATION}/cpp/build
 	pushd ${DESTINATION}/cpp/build
-
-    export CFLAGS="-fPIC -Wno-deprecated-declarations"
-    export CXXFLAGS="-fPIC -Wno-deprecated-declarations -std=c++11"
 
 	case $OS in
         Linux)

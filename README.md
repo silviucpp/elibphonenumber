@@ -8,7 +8,7 @@ Erlang port of [libphonenumber][1]
 
 ## Notes
 
-- This project is active. I'm doing updates very offen because I see the original author is no longer maintaining it.
+- This project is active. I'm doing updates very often because I see the original author is no longer maintaining it.
 - Compatible with both `rebar` and `rebar3` or `hex`
 - To change the `libphonenumber` version modify in `rebar.config` the `TAG` argument sent to `make`
 
@@ -16,7 +16,7 @@ Erlang port of [libphonenumber][1]
 
 In order to compile you need to make sure all dependencies needed to build `libphonenumber` are already installed.
 
-Next you can find a resume for each operating system where library was tested but in case you encounter problems you can 
+Next you can find a resume for each operating system where library was tested but in case you encounter problems you can
 consult as well the documentation from building `libphonenumber` located [here][2]
 
 ##### Ubuntu or Debian
@@ -44,15 +44,15 @@ sudo yum install cmake git gtest-devel boost-devel libicu-devel protobuf-devel p
 ##### Mac Os
 
 On `Mac OS` make sure you have `brew` installed and rebar will automatically install all necessary dependencies.
- 
+
 ## Get carrier for number
-    
-In order to do this make sure the application is started then use `phonenumber_to_carrier:carrier_for_number/2` method    
-    
+
+In order to do this make sure the application is started then use `phonenumber_to_carrier:carrier_for_number/2` method
+
 ```erlang 
 application:ensure_all_started(elibphonenumber).
 phonenumber_to_carrier:carrier_for_number(<<"44743655551">>, <<"en">>).
-```    
+```
 
 ## Run the tests
 
