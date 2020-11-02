@@ -4,18 +4,10 @@ PROJECT_NIF_NAME=phonenumber_util_nif
 include nif.mk
 
 ifeq ($(UNAME_SYS), darwin)
-	ICU_PATH := /usr/local/Cellar/icu4c
-	ICU_VERSION_CMD := $(shell ls $(ICU_PATH))
-	ICU_VERSION := $(shell echo $(ICU_VERSION_CMD) | awk '{print $0}')
-
-	PROTO_PATH := /usr/local/Cellar/protobuf
-	PROTO_VERSION_CMD := $(shell ls $(PROTO_PATH))
-	PROTO_VERSION := $(shell echo $(PROTO_VERSION_CMD) | awk '{print $0}')
-
-	CXXFLAGS += -I $(PROTO_PATH)/$(PROTO_VERSION)/include
+	CXXFLAGS += -I/usr/local/opt/protobuf/include
 
 	LDFLAGS +=  -L/usr/local/lib/ \
-				-L$(ICU_PATH)/$(ICU_VERSION)/lib \
+				-L/usr/local/opt/icu4c/lib \
 			    -lphonenumber \
 				-lboost_thread-mt \
 				-lstdc++ \
