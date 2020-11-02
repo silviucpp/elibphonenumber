@@ -41,12 +41,7 @@ qmake_unix()
 
 qmake_darwin()
 {
-    ICU_PATH=/usr/local/Cellar/icu4c
-    CMD_VERSION=`ls ${ICU_PATH}`
-    ICU_VERSION=`echo $CMD_VERSION | awk '{print $1}'`
-
-    echo "ICU_PATH=${ICU_PATH}"
-    echo "ICU_VERSION=${ICU_VERSION}"
+    export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig"
 
 	fail_check cmake \
         -DCMAKE_CXX_FLAGS="-std=c++11 " \
@@ -55,10 +50,10 @@ qmake_darwin()
 	    -DUSE_RE2=OFF \
 	    -DUSE_ICU_REGEXP=ON \
 	    -DREGENERATE_METADATA=OFF \
-        -DICU_UC_INCLUDE_DIR=${ICU_PATH}/${ICU_VERSION}/include/ \
-        -DICU_UC_LIB=${ICU_PATH}/${ICU_VERSION}/lib/libicuuc.dylib \
-        -DICU_I18N_INCLUDE_DIR=${ICU_PATH}/${ICU_VERSION}/include/ \
-        -DICU_I18N_LIB=${ICU_PATH}/${ICU_VERSION}/lib/libicui18n.dylib \
+        -DICU_UC_INCLUDE_DIR=/usr/local/opt/icu4c/include \
+        -DICU_UC_LIB=/usr/local/opt/icu4c/lib/libicuuc.dylib \
+        -DICU_I18N_INCLUDE_DIR=/usr/local/opt/icu4c/include \
+        -DICU_I18N_LIB=/usr/local/opt/icu4c/lib/libicui18n.dylib \
         -DGTEST_SOURCE_DIR=../../../googletest/googletest/ \
         -DGTEST_INCLUDE_DIR=../../../googletest/googletest/include/ \
         ..
