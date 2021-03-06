@@ -27,7 +27,7 @@ before_script:
 - if [[ $TRAVIS_OS_NAME == linux ]]; then sudo apt-get install -y libboost-dev libboost-thread-dev libboost-system-dev  || true ; fi
 
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
-- if [[ $TRAVIS_OS_NAME == osx ]]; then brew install --build-from-source erlang@22; fi
+- if [[ $TRAVIS_OS_NAME == osx ]]; then travis_wait 60 brew install --build-from-source erlang@22; fi
 
 - curl https://s3.amazonaws.com/rebar3/rebar3 --output rebar3 && chmod +x rebar3
 
