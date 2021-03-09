@@ -12,7 +12,8 @@ start_link() ->
 
 init([]) ->
     Children = [
-        worker(phonenumber_to_carrier)
+        worker(phonenumber_to_carrier),
+        worker(phonenumber_to_timezones)
     ],
     {ok, {{one_for_one, 1000, 1}, Children}}.
 

@@ -54,6 +54,16 @@ application:ensure_all_started(elibphonenumber).
 phonenumber_to_carrier:carrier_for_number(<<"44743655551">>, <<"en">>).
 ```
 
+## Get Timezones for a number
+
+In order to get the timezones associated with a number you can call `phonenumber_to_timezones:timezones_for_number/1` method as follow:
+
+```erlang 
+application:ensure_all_started(elibphonenumber).
+phonenumber_to_timezones:timezones_for_number(<<"16502530000">>).
+{ok,[<<"America/Los_Angeles">>]}
+```
+
 ## Run the tests
 
 ```bash

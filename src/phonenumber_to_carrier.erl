@@ -2,8 +2,6 @@
 
 -behaviour(gen_server).
 
--define(PLUS_SIGN_DIGIT, 43).
-
 -export([
     start_link/0,
     carrier_for_number/2,
@@ -26,7 +24,7 @@ start_link() ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 carrier_for_number(Number, Lang) ->
-    gen_server:call(?MODULE, {carrier_for_number, number_to_bin(Number), Lang}).
+    gen_server:call(?MODULE, {carrier_for_number, elibphone_utils:number_to_bin(Number), Lang}).
 
 init([]) ->
     Path = elibphone_utils:get_priv_path(<<"carrier">>),
@@ -120,18 +118,4 @@ get_lines(Device, Accum) ->
                             get_lines(Device, Accum)
                     end
             end
-    end.
-
-number_to_bin(Nr) when is_binary(Nr) ->
-    trim_plus_sign(Nr);
-number_to_bin(Nr) ->
-    trim_plus_sign(phonenumber_util:format(Nr, e164)).
-
-trim_plus_sign(P) when is_binary(P) ->
-    case binary:first(P) of
-        ?PLUS_SIGN_DIGIT ->
-            <<_:1/binary, Value/binary>> = P,
-            Value;
-        _ ->
-            P
     end.

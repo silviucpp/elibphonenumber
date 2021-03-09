@@ -1,7 +1,4 @@
-%% @headerfile
-
--record(phonenumber,
-{
+-record(phonenumber, {
     has_country_code :: boolean(),
     country_code :: non_neg_integer(),
     has_national_number :: boolean(),
@@ -18,20 +15,20 @@
     country_code_source :: non_neg_integer(),
     has_preferred_domestic_carrier_code :: boolean(),
     preferred_domestic_carrier_code :: binary()
-}). %% tuple 16 + 1 
+}). %% tuple 16 + 1
+
 -type phonenumber() :: #phonenumber{}.
 
--type phonenumber_country_code_source() ::
-    from_number_with_plus_sign | 
-    from_number_with_idd |
-    from_number_without_plus_sign |
-    from_default_country |
-    unspecified.
+-type phonenumber_format() ::
+    e164 |
+    international |
+    national |
+    rfc3966.
 
--type phonenumber_type() :: 
-    fixed_line | 
-    mobile | 
-    fixed_line_or_mobile | 
+-type phonenumber_type() ::
+    fixed_line |
+    mobile |
+    fixed_line_or_mobile |
     toll_free |
     premium_rate |
     shared_cost |
@@ -42,13 +39,14 @@
     voicemail |
     unknown.
 
--type phonenumber_format() :: 
-    e164 |
-    international |
-    national |
-    rfc3966.
+-type match_type() ::
+    invalid_number |
+    no_match |
+    short_nsn_match |
+    nsn_match |
+    exact_match.
 
--type validation_result() :: 
+-type validation_result() ::
     is_possible |
     is_possible_local_only |
     invalid_country_code |
@@ -56,9 +54,12 @@
     too_short |
     too_long.
 
--type match_type() :: 
-    invalid_number | 
-    no_match | 
-    short_nsn_match | 
-    nsn_match |
-    exact_match.
+-type phonenumber_country_code_source() ::
+    from_number_with_plus_sign |
+    from_number_with_idd |
+    from_number_without_plus_sign |
+    from_default_country |
+    unspecified.
+
+
+

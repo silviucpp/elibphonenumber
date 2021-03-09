@@ -93,6 +93,7 @@ copy_resources()
     rm -rf priv
     fail_check mkdir priv
     fail_check cp -R $DEPS_LOCATION/$DESTINATION/resources/carrier priv/carrier
+    fail_check cp -R $DEPS_LOCATION/$DESTINATION/resources/timezones priv/timezones
 }
 
 run_installation()

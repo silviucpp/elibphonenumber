@@ -4,38 +4,47 @@
 
 -export([
     new/0,
+
     has_country_code/1,
     get_country_code/1,
     set_country_code/2,
     clear_country_code/1,
+
     has_national_number/1,
     get_national_number/1,
     set_national_number/2,
     clear_national_number/1,
+
     has_extension/1,
     get_extension/1,
     set_extension/2,
     clear_extension/1,
+
     has_italian_leading_zero/1,
     set_italian_leading_zero/2,
     is_italian_leading_zero/1,
     clear_italian_leading_zero/1,
+
     has_number_of_leading_zeros/1,
     get_number_of_leading_zeros/1,
     set_number_of_leading_zeros/2,
     clear_number_of_leading_zeros/1,
+
     has_raw_input/1,
     get_raw_input/1,
     set_raw_input/2,
     clear_raw_input/1,
+
     has_country_code_source/1,
     get_country_code_source/1,
     set_country_code_source/2,
     clear_country_code_source/1,
+
     has_preferred_domestic_carrier_code/1,
     get_preferred_domestic_carrier_code/1,
     set_preferred_domestic_carrier_code/2,
     clear_preferred_domestic_carrier_code/1,
+
     clear/1,
     merge_from/2,
     exactly_same_as/2
@@ -290,31 +299,31 @@ merge_from(PhoneNumberFrom, PhoneNumberTo) ->
     end,
     Step2 = if PhoneNumberFrom#phonenumber.has_national_number ->
         set_national_number(PhoneNumberFrom#phonenumber.national_number, Step1);
-        true -> Step1 
+        true -> Step1
     end,
     Step3 = if PhoneNumberFrom#phonenumber.has_extension ->
         set_extension(PhoneNumberFrom#phonenumber.extension, Step2);
-        true -> Step2 
+        true -> Step2
     end,
     Step4 = if PhoneNumberFrom#phonenumber.has_italian_leading_zero ->
         set_italian_leading_zero(PhoneNumberFrom#phonenumber.italian_leading_zero, Step3);
-        true -> Step3 
+        true -> Step3
     end,
     Step5 = if PhoneNumberFrom#phonenumber.has_number_of_leading_zeros ->
         set_number_of_leading_zeros(PhoneNumberFrom#phonenumber.number_of_leading_zeros, Step4);
-        true -> Step4 
+        true -> Step4
     end,
     Step6 = if PhoneNumberFrom#phonenumber.has_raw_input ->
         set_raw_input(PhoneNumberFrom#phonenumber.raw_input, Step5);
-        true -> Step5 
+        true -> Step5
     end,
     Step7 = if PhoneNumberFrom#phonenumber.has_country_code_source ->
         set_country_code_source(PhoneNumberFrom#phonenumber.country_code_source, Step6);
-        true -> Step6 
+        true -> Step6
     end,
     if PhoneNumberFrom#phonenumber.has_preferred_domestic_carrier_code ->
         set_preferred_domestic_carrier_code(PhoneNumberFrom#phonenumber.preferred_domestic_carrier_code, Step7);
-        true -> Step7 
+        true -> Step7
     end.
 
 -spec exactly_same_as(PhoneNumber::phonenumber(), PhoneNumberOther::phonenumber()) ->

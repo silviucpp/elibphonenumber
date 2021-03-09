@@ -661,24 +661,7 @@ static ERL_NIF_TERM Format_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv
     return make_binary(env, formatted_number.c_str(), formatted_number.size());
 }
 
-static ERL_NIF_TERM FormatNationalNumberWithPreferredCarrierCode_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
-{
-    UNUSED(argc);
-
-    PhoneNumber phoneNumber;
-
-    if (!term_to_phonenumber(env, argv[0], &phoneNumber))
-        return enif_make_badarg(env);
-
-    std::string fb_carrier_code;
-
-    if(!get_string(env, argv[1], &fb_carrier_code))
-        return enif_make_badarg(env);
-
-    std::string formatted_number;
-    PhoneNumberUtil::GetInstance()->FormatNationalNumberWithPreferredCarrierCode(phoneNumber, fb_carrier_code, &formatted_number);
-    return make_binary(env, formatted_number.c_str(), formatted_number.size());
-}
+// FormatByPattern
 
 static ERL_NIF_TERM FormatNationalNumberWithCarrierCode_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
 {
@@ -696,6 +679,25 @@ static ERL_NIF_TERM FormatNationalNumberWithCarrierCode_nif(ErlNifEnv* env, int 
 
     std::string formatted_number;
     PhoneNumberUtil::GetInstance()->FormatNationalNumberWithCarrierCode(phoneNumber, carrier_code, &formatted_number);
+    return make_binary(env, formatted_number.c_str(), formatted_number.size());
+}
+
+static ERL_NIF_TERM FormatNationalNumberWithPreferredCarrierCode_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
+{
+    UNUSED(argc);
+
+    PhoneNumber phoneNumber;
+
+    if (!term_to_phonenumber(env, argv[0], &phoneNumber))
+        return enif_make_badarg(env);
+
+    std::string fb_carrier_code;
+
+    if(!get_string(env, argv[1], &fb_carrier_code))
+        return enif_make_badarg(env);
+
+    std::string formatted_number;
+    PhoneNumberUtil::GetInstance()->FormatNationalNumberWithPreferredCarrierCode(phoneNumber, fb_carrier_code, &formatted_number);
     return make_binary(env, formatted_number.c_str(), formatted_number.size());
 }
 
@@ -968,6 +970,30 @@ static ERL_NIF_TERM IsPossibleNumberForString_nif(ErlNifEnv* env, int argc, cons
     return boolean_to_term(PhoneNumberUtil::GetInstance()->IsPossibleNumberForString(number, region_dialing_from));
 }
 
+static ERL_NIF_TERM CanBeInternationallyDialled_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
+{
+    UNUSED(argc);
+
+    PhoneNumber phoneNumber;
+
+    if (!term_to_phonenumber(env, argv[0], &phoneNumber))
+        return enif_make_badarg(env);
+
+    return boolean_to_term(PhoneNumberUtil::GetInstance()->CanBeInternationallyDialled(phoneNumber));
+}
+
+static ERL_NIF_TERM IsNumberGeographical_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
+{
+    UNUSED(argc);
+
+    PhoneNumber phoneNumber;
+
+    if (!term_to_phonenumber(env, argv[0], &phoneNumber))
+        return enif_make_badarg(env);
+
+    return boolean_to_term(PhoneNumberUtil::GetInstance()->IsNumberGeographical(phoneNumber));
+}
+
 static ERL_NIF_TERM GetExampleNumber_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
 {
     UNUSED(argc);
@@ -1144,6 +1170,8 @@ static ErlNifFunc nif_funcs[] =
     {"is_possible_number_with_reason", 1, IsPossibleNumberWithReason_nif},
     {"is_possible_number", 1, IsPossibleNumber_nif},
     {"is_possible_number_for_string", 2, IsPossibleNumberForString_nif},
+    {"can_be_internationally_dialled", 1, CanBeInternationallyDialled_nif},
+    {"is_number_geographical", 1, IsNumberGeographical_nif},
     {"get_example_number", 1, GetExampleNumber_nif},
     {"get_example_number_for_type", 2, GetExampleNumberForType_nif},
     {"get_example_number_for_non_geo_entity", 1, GetExampleNumberForNonGeoEntity_nif},
