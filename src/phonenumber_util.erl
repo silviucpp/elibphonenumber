@@ -39,6 +39,7 @@
     get_country_code_for_region/1,
     get_region_code_for_country_code/1,
     get_region_codes_for_country_calling_code/1,
+    get_region_display_name/2,
     is_nanpa_country/1,
     get_ndd_prefix_for_region/2,
     is_possible_number_with_reason/1,
@@ -421,6 +422,14 @@ get_region_code_for_country_code(_CountryCode) ->
 %% is left unchanged.
 
 get_region_codes_for_country_calling_code(_CountryCallingCode) ->
+    ?NOT_LOADED.
+
+-spec get_region_display_name(RegionCode::binary(), Language::binary()) ->
+    binary().
+
+%% @doc Get display name (country name) for a region code.
+
+get_region_display_name(_RegionCode, _Language) ->
     ?NOT_LOADED.
 
 -spec is_nanpa_country(RegionCode::binary()) ->
