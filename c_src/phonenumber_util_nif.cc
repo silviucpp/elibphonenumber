@@ -1,4 +1,6 @@
 #include <phonenumbers/phonenumberutil.h>
+#include <phonenumbers/geocoding/phonenumber_offline_geocoder.h>
+
 #include <erl_nif.h>
 #include <string>
 #include <vector>
@@ -7,8 +9,14 @@
 
 using i18n::phonenumbers::PhoneNumberUtil;
 using i18n::phonenumbers::PhoneNumber;
+using i18n::phonenumbers::PhoneNumberOfflineGeocoder;
 
 namespace {
+
+struct phonenumber_data
+{
+    PhoneNumberOfflineGeocoder* geocoder;
+};
 
 // phone number tuple indexes
 
@@ -515,11 +523,64 @@ int on_nif_load(ErlNifEnv* env, void** priv_data, ERL_NIF_TERM load_info)
 
     ATOMS.atomPhoneNumber = make_atom(env, "phonenumber");
 
-    *priv_data = NULL;
+    phonenumber_data* data = static_cast<phonenumber_data*>(enif_alloc(sizeof(phonenumber_data)));
+    data->geocoder = new PhoneNumberOfflineGeocoder();
+    *priv_data = data;
+
     return 0;
 }
 
-// NIF functions
+void on_nif_unload(ErlNifEnv* env, void* priv_data)
+{
+    UNUSED(env);
+
+    phonenumber_data* data = static_cast<phonenumber_data*>(priv_data);
+
+    if(data->geocoder)
+        delete data->geocoder;
+
+    enif_free(data);
+}
+
+int on_nif_upgrade(ErlNifEnv* env, void** priv, void** old_priv, ERL_NIF_TERM info)
+{
+    UNUSED(old_priv);
+    UNUSED(info);
+
+    phonenumber_data* old_data = static_cast<phonenumber_data*>(*old_priv);
+    phonenumber_data* data = static_cast<phonenumber_data*>(enif_alloc(sizeof(phonenumber_data)));
+
+    data->geocoder = old_data->geocoder;
+    old_data->geocoder = nullptr;
+
+    *priv = data;
+    return 0;
+}
+
+// NIF functions -> Geocoding
+
+static ERL_NIF_TERM GetGeocodingForNumber_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
+{
+    UNUSED(argc);
+
+    PhoneNumber phoneNumber;
+
+    if (!term_to_phonenumber(env, argv[0], &phoneNumber))
+        return enif_make_badarg(env);
+
+    std::string locale_str;
+
+    if(!get_string(env, argv[1], &locale_str))
+        return enif_make_badarg(env);
+
+    icu::Locale locale(locale_str.c_str());
+
+    phonenumber_data* data = static_cast<phonenumber_data*>(enif_priv_data(env));
+    std::string description = data->geocoder->GetDescriptionForValidNumber(phoneNumber, locale);
+    return make_binary(env, description.c_str(), description.size());
+}
+
+// NIF functions -> PhoneNumberUtil
 
 static ERL_NIF_TERM GetSupportedRegions_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
 {
@@ -1141,6 +1202,12 @@ static ERL_NIF_TERM IsNumberMatchWithOneString_nif(ErlNifEnv* env, int argc, con
 
 static ErlNifFunc nif_funcs[] =
 {
+    // PhoneNumberOfflineGeocoder
+
+    {"get_geocoding_for_number", 2, GetGeocodingForNumber_nif},
+
+    // PhoneNumberUtil
+
     {"get_supported_regions", 0, GetSupportedRegions_nif},
     {"is_alpha_number", 1, IsAlphaNumber_nif},
     {"convert_alpha_characters_in_number", 1, ConvertAlphaCharactersInNumber_nif},
@@ -1182,4 +1249,4 @@ static ErlNifFunc nif_funcs[] =
     {"is_number_match_with_one_string", 2, IsNumberMatchWithOneString_nif}
 };
 
-ERL_NIF_INIT(phonenumber_util, nif_funcs, on_nif_load, NULL, NULL, NULL)
+ERL_NIF_INIT(phonenumber_util, nif_funcs, on_nif_load, NULL, on_nif_upgrade, on_nif_unload)

@@ -64,6 +64,16 @@ phonenumber_to_timezones:timezones_for_number(<<"16502530000">>).
 {ok,[<<"America/Los_Angeles">>]}
 ```
 
+## Geocoding
+
+Using the following method you can get the geographical area of a phone number (in case this information is available).
+
+```erlang 
+application:ensure_all_started(elibphonenumber).
+phonenumber_geocoding:get_geocoding_for_number(<<"+16502530000">>),
+<<"Mountain View, CA">>
+```
+
 ## Run the tests
 
 ```bash

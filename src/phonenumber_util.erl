@@ -7,6 +7,13 @@
 -on_load(load_nif/0).
 
 -export([
+
+    % geocoder
+
+    get_geocoding_for_number/2,
+
+    % utils
+
     get_supported_regions/0,
     is_alpha_number/1,
     convert_alpha_characters_in_number/1,
@@ -56,6 +63,23 @@ load_nif() ->
 
 not_loaded(Line) ->
     erlang:nif_error({not_loaded, [{module, ?MODULE}, {line, Line}]}).
+
+%% @doc Returns a text description for the given phone number, in the language
+%% provided. The description might consist of the name of the country where
+%% the phone number is from, or the name of the geographical area the phone
+%% number is from if more detailed information is available. Returns an empty
+%% string if the number could come from multiple countries, or the country
+%% code is in fact invalid.
+%%
+%% This method assumes the validity of the number passed in has already been
+%% checked, and that the number is suitable for geocoding. We consider
+%% fixed-line and mobile numbers possible candidates for geocoding.
+
+-spec get_geocoding_for_number(Number::phonenumber(), Locale::binary()) ->
+    binary().
+
+get_geocoding_for_number(_Number, _Locale) ->
+    ?NOT_LOADED.
 
 -spec get_supported_regions() ->
     [binary()].
