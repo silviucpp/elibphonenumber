@@ -340,6 +340,11 @@ get_region_code_for_number_test() ->
     P52 = phonenumber:set_national_number(123456789, P51),
     <<"001">> = phonenumber_util:get_region_code_for_number(P52).
 
+get_region_display_name_test() ->
+    <<>> = phonenumber_util:get_region_display_name(<<"ZZ">>, <<"en">>),
+    <<"United Kingdom">> = phonenumber_util:get_region_display_name(<<"GB">>, <<"en">>),
+    <<"United Kingdom">> = phonenumber_util:get_region_display_name(<<"gb">>, <<"en">>).
+
 is_possible_number_test() ->
     P1 = phonenumber:new(),
     P11 = phonenumber:set_country_code(1, P1),

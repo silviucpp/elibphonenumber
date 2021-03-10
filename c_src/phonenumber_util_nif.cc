@@ -959,6 +959,27 @@ static ERL_NIF_TERM GetRegionCodesForCountryCallingCode_nif(ErlNifEnv* env, int 
     return enif_make_list_from_array(env, array.data(), array.size());
 }
 
+static ERL_NIF_TERM GetRegionDisplayName_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
+{
+    std::string region_code;
+    std::string locale_str;
+
+    if(!get_string(env, argv[0], &region_code) || !get_string(env, argv[1], &locale_str))
+        return enif_make_badarg(env);
+
+    std::string display_country;
+
+    if (region_code.compare("ZZ") != 0 && region_code.compare(PhoneNumberUtil::kRegionCodeForNonGeoEntity) != 0)
+    {
+        icu::Locale language(locale_str.c_str());
+        icu::UnicodeString udisplay_country;
+        icu::Locale("", region_code.c_str()).getDisplayCountry(language, udisplay_country);
+        udisplay_country.toUTF8String(display_country);
+    }
+
+    return make_binary(env, display_country.c_str(), display_country.size());
+}
+
 static ERL_NIF_TERM IsNANPACountry_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
 {
     UNUSED(argc);
@@ -1232,6 +1253,7 @@ static ErlNifFunc nif_funcs[] =
     {"get_country_code_for_region", 1, GetCountryCodeForRegion_nif},
     {"get_region_code_for_country_code", 1, GetRegionCodeForCountryCode_nif},
     {"get_region_codes_for_country_calling_code", 1, GetRegionCodesForCountryCallingCode_nif},
+    {"get_region_display_name", 2, GetRegionDisplayName_nif},
     {"is_nanpa_country", 1, IsNANPACountry_nif},
     {"get_ndd_prefix_for_region", 2, GetNddPrefixForRegion_nif},
     {"is_possible_number_with_reason", 1, IsPossibleNumberWithReason_nif},
