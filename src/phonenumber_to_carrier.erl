@@ -1,5 +1,7 @@
 -module(phonenumber_to_carrier).
 
+-include("libphonenumber.hrl").
+
 -behaviour(gen_server).
 
 -export([
@@ -17,14 +19,28 @@
 ]).
 
 -record(state, {
-    carrier_dict
+    carrier_maps
 }).
 
 start_link() ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
+-spec carrier_for_number(phonenumber()|binary(), binary()) ->
+    binary().
+
 carrier_for_number(Number, Lang) ->
-    gen_server:call(?MODULE, {carrier_for_number, elibphone_utils:number_to_bin(Number), Lang}).
+    case elibphone_utils:to_number_object(Number) of
+        {ok, Nr} ->
+            case is_mobile(phonenumber_util:get_number_type(Nr)) of
+                true ->
+                    E164NoSign = elibphone_utils:trim_plus_sign(phonenumber_util:format(Nr, e164)),
+                    gen_server:call(?MODULE, {carrier_for_number, E164NoSign, Lang});
+                _ ->
+                    <<>>
+            end;
+        _Error ->
+            <<>>
+    end.
 
 init([]) ->
     Path = elibphone_utils:get_priv_path(<<"carrier">>),
@@ -37,16 +53,16 @@ init([]) ->
 
         case load_carrier_mapping(LangPath) of
             {ok, Trie} ->
-                dict:store(Lang, Trie, Acc);
+                maps:put(Lang, Trie, Acc);
             _ ->
                 Acc
         end
     end,
 
-    {ok, #state{carrier_dict = lists:foldl(FunLang, dict:new(), AllLanguages)}}.
+    {ok, #state{carrier_maps = lists:foldl(FunLang, maps:new(), AllLanguages)}}.
 
-handle_call({carrier_for_number, Number, Lang}, _From, #state {carrier_dict = Dict} = State) ->
-    Carrier = case dict:find(Lang, Dict) of
+handle_call({carrier_for_number, Number, Lang}, _From, #state {carrier_maps = Maps} = State) ->
+    Carrier = case maps:find(Lang, Maps) of
         {ok, Trie} ->
             case btrie:find_prefix_longest(Number, Trie) of
                 {ok, _Prefix, C} ->
@@ -74,6 +90,17 @@ terminate(_Reason, _State) ->
 code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
 
+% internals
+
+is_mobile(mobile) ->
+    true;
+is_mobile(fixed_line_or_mobile) ->
+    true;
+is_mobile(pager) ->
+    true;
+is_mobile(_) ->
+    false.
+
 load_carrier_mapping(Path) ->
     case file:list_dir(Path) of
         {ok, AllFiles} ->
@@ -98,24 +125,24 @@ load_carrier_mapping(Path) ->
 get_lines(Device) ->
     get_lines(Device, []).
 
-get_lines(Device, Accum) ->
+get_lines(Device, Acc) ->
     case io:get_line(Device, "") of
         eof  ->
             file:close(Device),
-            Accum;
+            Acc;
         Line ->
             LineBin = list_to_binary(Line),
 
             case LineBin of
                 <<"#", _/binary>> ->
-                    get_lines(Device, Accum);
+                    get_lines(Device, Acc);
                 _ ->
                     case binary:split(LineBin, <<"|">>, [global]) of
                         [Prefix, Carrier0] ->
                             Carrier = re:replace(Carrier0, "(^\\s+)|(\\s+$)", "", [global,{return,binary}]),
-                            get_lines(Device, [{Prefix, Carrier}|Accum]);
+                            get_lines(Device, [{Prefix, Carrier}| Acc]);
                         _ ->
-                            get_lines(Device, Accum)
+                            get_lines(Device, Acc)
                     end
             end
     end.

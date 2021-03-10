@@ -6,8 +6,9 @@
 
 -export([
     get_priv_path/1,
-    number_to_bin/1,
-    to_number_object/1
+    to_number_object/1,
+    trim_plus_sign/1,
+    append_plus_sign/1
 ]).
 
 get_priv_path(File) ->
@@ -18,11 +19,6 @@ get_priv_path(File) ->
         Dir ->
             filename:join(Dir, File)
     end.
-
-number_to_bin(Nr) when is_binary(Nr) ->
-    trim_plus_sign(Nr);
-number_to_bin(Nr) ->
-    trim_plus_sign(phonenumber_util:format(Nr, e164)).
 
 to_number_object(#phonenumber{} = N) ->
     {ok, N};

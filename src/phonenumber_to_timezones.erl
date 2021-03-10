@@ -33,7 +33,12 @@ start_link() ->
 timezones_for_number(Number) ->
     case elibphone_utils:to_number_object(Number) of
         {ok, Nr} ->
-            gen_server:call(?MODULE, {timezones_for_number, Nr});
+            case phonenumber_util:get_number_type(Nr) of
+                unknown ->
+                    false;
+                _ ->
+                    gen_server:call(?MODULE, {timezones_for_number, get_prefix(Nr)})
+            end;
         Error ->
             Error
     end.
@@ -43,24 +48,12 @@ init([]) ->
     {ok, TimezonesMapping} = load_timezones_mapping(<<Path/binary, "/map_data.txt">>),
     {ok, #state{timezones_trie = TimezonesMapping}}.
 
-handle_call({timezones_for_number, Number}, _From, #state {timezones_trie = TimezonesTrie} = State) ->
-    case phonenumber_util:get_number_type(Number) of
-        unknown ->
-            {reply, false, State};
+handle_call({timezones_for_number, Prefix}, _From, #state {timezones_trie = TimezonesTrie} = State) ->
+    case btrie:find_prefix_longest(Prefix, TimezonesTrie) of
+        {ok, _Prefix, C} ->
+            {reply, {ok, C}, State};
         _ ->
-            Prefix = case phonenumber_util:is_number_geographical(Number) of
-                true ->
-                    <<(integer_to_binary(phonenumber:get_country_code(Number)))/binary, (phonenumber_util:get_national_significant_number(Number))/binary>>;
-                _ ->
-                    integer_to_binary(phonenumber:get_country_code(Number))
-            end,
-
-            case btrie:find_prefix_longest(Prefix, TimezonesTrie) of
-                {ok, _Prefix, C} ->
-                    {reply, {ok, C}, State};
-                _ ->
-                    {reply, false, State}
-            end
+            {reply, false, State}
     end;
 
 handle_call(_Request, _From, State) ->
@@ -77,6 +70,16 @@ terminate(_Reason, _State) ->
 
 code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
+
+%internals
+
+get_prefix(Number) ->
+    case phonenumber_util:is_number_geographical(Number) of
+        true ->
+            <<(integer_to_binary(phonenumber:get_country_code(Number)))/binary, (phonenumber_util:get_national_significant_number(Number))/binary>>;
+        _ ->
+            integer_to_binary(phonenumber:get_country_code(Number))
+     end.
 
 load_timezones_mapping(FilePath) ->
     {ok, Device} = file:open(FilePath, [read]),
