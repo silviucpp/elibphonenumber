@@ -4,6 +4,7 @@
 #include <erl_nif.h>
 #include <string>
 #include <vector>
+#include <unicode/unistr.h>
 
 #define UNUSED(expr) do { (void)(expr); } while (0)
 
