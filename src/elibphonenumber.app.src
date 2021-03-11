@@ -1,5 +1,5 @@
 {application, elibphonenumber, [
-    {description, "Port driver for libphonenumber"},
+    {description, "Erlang driver for libphonenumber."},
     {licenses, ["Apache"]},
     {links,[{"Github","https://github.com/silviucpp/elibphonenumber"}]},
     {vsn, "8.12.19-1"},
