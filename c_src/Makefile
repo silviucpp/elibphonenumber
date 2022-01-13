@@ -13,6 +13,7 @@ ifeq ($(UNAME_SYS), darwin)
 				-lgeocoding \
 				-lboost_thread-mt \
 				-lstdc++ \
+				-framework CoreFoundation \
 				-Wl,-U,_enif_make_new_binary \
 				-Wl,-U,_enif_make_tuple \
 				-Wl,-U,_enif_make_ulong \
@@ -42,6 +43,27 @@ CXXFLAGS +=  -fPIC -g -Wextra -Werror -std=c++11 -fno-exceptions -Wno-unused-par
 			 -I $(BASEDIR)/_build/deps/libphonenumber/cpp/build/install/include
 
 LDFLAGS +=  -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build \
+            -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl/base \
+			-L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl/debugging \
+			-L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl/strings \
+			-L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl/synchronization \
+			-L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl/time \
+			-L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl/numeric \
+			-labsl_base \
+			-labsl_spinlock_wait \
+			-labsl_malloc_internal \
+			-labsl_throw_delegate \
+			-labsl_raw_logging_internal \
+			-labsl_symbolize \
+			-labsl_stacktrace \
+			-labsl_debugging_internal \
+			-labsl_demangle_internal \
+			-labsl_strings \
+			-labsl_synchronization \
+			-labsl_graphcycles_internal \
+			-labsl_time \
+			-labsl_time_zone \
+			-labsl_int128 \
 			-lboost_system \
 			-lboost_date_time \
 			-licui18n \
