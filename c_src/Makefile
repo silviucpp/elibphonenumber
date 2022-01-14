@@ -36,7 +36,8 @@ ifeq ($(UNAME_SYS), darwin)
 else
 	LDFLAGS +=  -l:libphonenumber.a \
 				-l:libgeocoding.a \
-				-lboost_thread
+				-lboost_thread \
+				-Wl,--start-group
 endif
 
 CXXFLAGS +=  -fPIC -g -Wextra -Werror -std=c++11 -fno-exceptions -Wno-unused-parameter -Wno-missing-field-initializers \
@@ -50,16 +51,12 @@ LDFLAGS +=  -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build \
 			-L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl/synchronization \
 			-L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl/time \
 			-L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl/numeric \
-			-lboost_system \
-			-lboost_date_time \
-			-licui18n \
-			-licuuc \
-			-lprotobuf \
-			-Wl,--start-group \
 			-labsl_base \
+			-labsl_spinlock_wait \
 			-labsl_malloc_internal \
 			-labsl_throw_delegate \
 			-labsl_raw_logging_internal \
+			-labsl_symbolize \
 			-labsl_stacktrace \
 			-labsl_debugging_internal \
 			-labsl_demangle_internal \
@@ -69,5 +66,9 @@ LDFLAGS +=  -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build \
 			-labsl_time \
 			-labsl_time_zone \
 			-labsl_int128 \
-			-labsl_spinlock_wait \
-			-labsl_symbolize
+			-lboost_system \
+			-lboost_date_time \
+			-licui18n \
+			-licuuc \
+			-lprotobuf
+
