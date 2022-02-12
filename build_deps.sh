@@ -42,7 +42,9 @@ qmake_unix()
 
 qmake_darwin()
 {
-    export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig"
+    ICU4_DIR=$(brew --prefix icu4c)
+
+    export PKG_CONFIG_PATH="$ICU4_DIR/lib/pkgconfig"
 
 	fail_check cmake \
         -DCMAKE_CXX_FLAGS="-std=c++11 " \
@@ -52,10 +54,10 @@ qmake_darwin()
 	    -DUSE_ICU_REGEXP=ON \
 	    -DREGENERATE_METADATA=OFF \
 	    -USE_STDMUTEX=ON \
-        -DICU_UC_INCLUDE_DIR=/usr/local/opt/icu4c/include \
-        -DICU_UC_LIB=/usr/local/opt/icu4c/lib/libicuuc.dylib \
-        -DICU_I18N_INCLUDE_DIR=/usr/local/opt/icu4c/include \
-        -DICU_I18N_LIB=/usr/local/opt/icu4c/lib/libicui18n.dylib \
+        -DICU_UC_INCLUDE_DIR=$ICU4_DIR/include \
+        -DICU_UC_LIB=$ICU4_DIR/lib/libicuuc.dylib \
+        -DICU_I18N_INCLUDE_DIR=$ICU4_DIR/include \
+        -DICU_I18N_LIB=$ICU4_DIR/lib/libicui18n.dylib \
         -DGTEST_SOURCE_DIR=../../../googletest/googletest/ \
         -DGTEST_INCLUDE_DIR=../../../googletest/googletest/include/ \
         ..

@@ -3,12 +3,18 @@ PROJECT_NIF_NAME=phonenumber_util_nif
 
 include nif.mk
 
-ifeq ($(UNAME_SYS), darwin)
-	CXXFLAGS += -I/usr/local/opt/protobuf/include \
-				-I/usr/local/opt/icu4c/include
+ABSEIL_BUILD_PATH := $(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl
 
-	LDFLAGS +=  -L/usr/local/lib/ \
-				-L/usr/local/opt/icu4c/lib \
+ifeq ($(UNAME_SYS), darwin)
+
+	ICU4_ROOT := $(shell brew --prefix icu4c)
+    PROTOBUF_ROOT := $(shell brew --prefix protobuf)
+
+	CXXFLAGS += -I$(PROTOBUF_ROOT)/include \
+				-I$(ICU4_ROOT)/include
+
+	LDFLAGS +=  -L$(PROTOBUF_ROOT)/lib \
+				-L$(ICU4_ROOT)/lib \
 				-lphonenumber \
 				-lgeocoding \
 				-lboost_thread-mt \
@@ -45,12 +51,12 @@ CXXFLAGS +=  -fPIC -g -Wextra -Werror -std=c++11 -fno-exceptions -Wno-unused-par
 			 -I $(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-src
 
 LDFLAGS +=  -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build \
-            -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl/base \
-			-L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl/debugging \
-			-L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl/strings \
-			-L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl/synchronization \
-			-L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl/time \
-			-L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl/numeric \
+            -L$(ABSEIL_BUILD_PATH)/base \
+			-L$(ABSEIL_BUILD_PATH)/debugging \
+			-L$(ABSEIL_BUILD_PATH)/strings \
+			-L$(ABSEIL_BUILD_PATH)/synchronization \
+			-L$(ABSEIL_BUILD_PATH)/time \
+			-L$(ABSEIL_BUILD_PATH)/numeric \
 			-labsl_base \
 			-labsl_spinlock_wait \
 			-labsl_malloc_internal \
