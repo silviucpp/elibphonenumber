@@ -52,7 +52,9 @@ CXXFLAGS +=  -fPIC -g -Wextra -Werror -std=c++11 -fno-exceptions -Wno-unused-par
 
 LDFLAGS +=  -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build \
             -L$(ABSEIL_BUILD_PATH)/base \
+            -L$(ABSEIL_BUILD_PATH)/container \
 			-L$(ABSEIL_BUILD_PATH)/debugging \
+			-L$(ABSEIL_BUILD_PATH)/hash \
 			-L$(ABSEIL_BUILD_PATH)/strings \
 			-L$(ABSEIL_BUILD_PATH)/synchronization \
 			-L$(ABSEIL_BUILD_PATH)/time \
@@ -62,10 +64,15 @@ LDFLAGS +=  -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build \
 			-labsl_malloc_internal \
 			-labsl_throw_delegate \
 			-labsl_raw_logging_internal \
+			-labsl_hashtablez_sampler \
+			-labsl_raw_hash_set \
 			-labsl_symbolize \
 			-labsl_stacktrace \
 			-labsl_debugging_internal \
 			-labsl_demangle_internal \
+			-labsl_city \
+			-labsl_hash \
+			-labsl_low_level_hash \
 			-labsl_strings \
 			-labsl_synchronization \
 			-labsl_graphcycles_internal \
