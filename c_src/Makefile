@@ -46,7 +46,7 @@ else
 				-Wl,--start-group
 endif
 
-CXXFLAGS +=  -fPIC -g -Wextra -Werror -std=c++11 -fno-exceptions -Wno-unused-parameter -Wno-missing-field-initializers \
+CXXFLAGS +=  -fPIC -g -Wextra -Werror -std=c++14 -fno-exceptions -Wno-unused-parameter -Wno-missing-field-initializers \
 			 -I $(BASEDIR)/_build/deps/libphonenumber/cpp/build/install/include \
 			 -I $(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-src
 
