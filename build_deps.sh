@@ -8,9 +8,7 @@ if [ -f "$DEPS_LOCATION/$DESTINATION/cpp/build/libphonenumber.a" ]; then
     exit 0
 fi
 
-# in the main repo there is a compiling issue related to abseil. move to a fork until they fix this.
-# LIB_PHONE_NUMBER_REPO=https://github.com/googlei18n/libphonenumber.git
-LIB_PHONE_NUMBER_REPO=https://github.com/silviucpp/libphonenumber.git
+LIB_PHONE_NUMBER_REPO=https://github.com/googlei18n/libphonenumber.git
 LIB_PHONE_NUMBER_REV=$1
 OS=$(uname -s)
 KERNEL=$(echo $(lsb_release -ds 2>/dev/null || cat /etc/system-release 2>/dev/null || cat /etc/*release 2>/dev/null | head -n1 | awk '{print $1;}') | awk '{print $1;}')
@@ -32,7 +30,7 @@ qmake_unix()
 {
 	fail_check cmake \
         -DCMAKE_C_FLAGS="-fPIC" \
-        -DCMAKE_CXX_FLAGS="-fPIC" \
+        -DCMAKE_CXX_FLAGS="-fPIC -std=c++11" \
         -DCMAKE_INSTALL_PREFIX:PATH=install \
         -DUSE_BOOST=ON \
         -DUSE_RE2=OFF \
@@ -49,19 +47,20 @@ qmake_darwin()
     export PKG_CONFIG_PATH="$ICU4_DIR/lib/pkgconfig"
 
 	fail_check cmake \
-        -DCMAKE_INSTALL_PREFIX:PATH=install \
-	    -DUSE_BOOST=OFF \
-	    -DUSE_RE2=OFF \
-	    -DUSE_ICU_REGEXP=ON \
-	    -DREGENERATE_METADATA=OFF \
-	    -USE_STDMUTEX=ON \
-        -DICU_UC_INCLUDE_DIR=$ICU4_DIR/include \
-        -DICU_UC_LIB=$ICU4_DIR/lib/libicuuc.dylib \
-        -DICU_I18N_INCLUDE_DIR=$ICU4_DIR/include \
-        -DICU_I18N_LIB=$ICU4_DIR/lib/libicui18n.dylib \
-        -DGTEST_SOURCE_DIR=../../../googletest/googletest/ \
-        -DGTEST_INCLUDE_DIR=../../../googletest/googletest/include/ \
-        ..
+      -DCMAKE_CXX_FLAGS="-std=c++11 " \
+      -DCMAKE_INSTALL_PREFIX:PATH=install \
+      -DUSE_BOOST=OFF \
+      -DUSE_RE2=OFF \
+      -DUSE_ICU_REGEXP=ON \
+      -DREGENERATE_METADATA=OFF \
+      -USE_STDMUTEX=ON \
+      -DICU_UC_INCLUDE_DIR=$ICU4_DIR/include \
+      -DICU_UC_LIB=$ICU4_DIR/lib/libicuuc.dylib \
+      -DICU_I18N_INCLUDE_DIR=$ICU4_DIR/include \
+      -DICU_I18N_LIB=$ICU4_DIR/lib/libicui18n.dylib \
+      -DGTEST_SOURCE_DIR=../../../googletest/googletest/ \
+      -DGTEST_INCLUDE_DIR=../../../googletest/googletest/include/ \
+      ..
 }
 
 install_libphonenumber()
