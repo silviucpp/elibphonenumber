@@ -141,7 +141,7 @@ run_installation()
          esac
             ;;
       Darwin)
-            brew install cmake pkg-config icu4c protobuf wget 
+            brew install cmake pkg-config icu4c protobuf wget
 
             fail_check git clone https://github.com/google/googletest.git
             pushd googletest
