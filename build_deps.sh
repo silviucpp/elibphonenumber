@@ -8,8 +8,16 @@ if [ -f "$DEPS_LOCATION/$DESTINATION/cpp/build/libphonenumber.a" ]; then
     exit 0
 fi
 
+LIB_PHONE_NUMBER_ARCHIVE=https://github.com/google/libphonenumber/archive/$1.tar.gz
 LIB_PHONE_NUMBER_REPO=https://github.com/googlei18n/libphonenumber.git
 LIB_PHONE_NUMBER_REV=$1
+
+DRIVER_SRC="git"
+if [ "$2" = "archive" ]; then
+  DRIVER_SRC="archive";
+  ARCHIVE_VER=$(echo "$LIB_PHONE_NUMBER_REV" | sed -e 's/^v//g');
+fi
+
 OS=$(uname -s)
 KERNEL=$(echo $(lsb_release -ds 2>/dev/null || cat /etc/system-release 2>/dev/null || cat /etc/*release 2>/dev/null | head -n1 | awk '{print $1;}') | awk '{print $1;}')
 
@@ -65,10 +73,19 @@ qmake_darwin()
 
 install_libphonenumber()
 {
-	git clone ${LIB_PHONE_NUMBER_REPO} ${DESTINATION}
-	pushd ${DESTINATION}
-	fail_check git checkout ${LIB_PHONE_NUMBER_REV}
-	popd
+  if [ "${DRIVER_SRC}" = "git" ]; then
+		echo "Building from Git tag"
+		git clone ${LIB_PHONE_NUMBER_REPO} ${DESTINATION}
+		pushd ${DESTINATION}
+		fail_check git checkout ${LIB_PHONE_NUMBER_REV}
+		popd
+	elif [ "${DRIVER_SRC}" = "archive" ]; then
+		echo "Building from Git archive"
+		fail_check wget -q -O libphonenumber.tar.gz $LIB_PHONE_NUMBER_ARCHIVE
+		fail_check tar -xf libphonenumber.tar.gz
+		fail_check rm libphonenumber.tar.gz
+		fail_check mv libphonenumber-${ARCHIVE_VER} ${DESTINATION}
+	fi;
 
 	mkdir -p ${DESTINATION}/cpp/build
 	pushd ${DESTINATION}/cpp/build
@@ -124,7 +141,7 @@ run_installation()
          esac
             ;;
       Darwin)
-            brew install cmake pkg-config icu4c protobuf
+            brew install cmake pkg-config icu4c protobuf wget 
 
             fail_check git clone https://github.com/google/googletest.git
             pushd googletest

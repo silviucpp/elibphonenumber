@@ -4,13 +4,14 @@ elibphonenumber
 [![GitHub](https://img.shields.io/github/license/silviucpp/elibphonenumber)](https://github.com/silviucpp/elibphonenumber/blob/master/LICENSE)
 [![Hex.pm](https://img.shields.io/hexpm/v/elibphonenumber)](https://hex.pm/packages/elibphonenumber)
 
-Erlang port of [libphonenumber][1]
+Erlang driver for [libphonenumber][1].
 
 ## Notes
 
 - This project is active. I'm doing updates very often because I see the original author is no longer maintaining it.
-- Compatible with both `rebar` and `rebar3` or `hex`
-- To change the `libphonenumber` version modify in `rebar.config` the `TAG` argument sent to `make`
+- Compatible with both `rebar` and `rebar3` or `hex`.
+- To change the `libphonenumber` version modify in `rebar.config` the `DRIVER_REV` argument sent to `make`.
+- By default, the build is using git tag archive rather than full clone and tag checkout. You can change this behaviour by modifying in `rebar.config` the `DRIVER_SRC` argument sent to `git`. 
 
 ## Compile
 
