@@ -40,11 +40,8 @@ qmake_unix()
         -DCMAKE_C_FLAGS="-fPIC" \
         -DCMAKE_CXX_FLAGS="-fPIC -std=c++11" \
         -DCMAKE_INSTALL_PREFIX:PATH=install \
-        -DUSE_BOOST=ON \
-        -DUSE_RE2=OFF \
-        -DUSE_ICU_REGEXP=ON \
+        -DUSE_BOOST=OFF \
         -USE_STDMUTEX=ON \
-        -DREGENERATE_METADATA=OFF \
         ..
 }
 
@@ -58,9 +55,6 @@ qmake_darwin()
       -DCMAKE_CXX_FLAGS="-std=c++11 " \
       -DCMAKE_INSTALL_PREFIX:PATH=install \
       -DUSE_BOOST=OFF \
-      -DUSE_RE2=OFF \
-      -DUSE_ICU_REGEXP=ON \
-      -DREGENERATE_METADATA=OFF \
       -USE_STDMUTEX=ON \
       -DICU_UC_INCLUDE_DIR=$ICU4_DIR/include \
       -DICU_UC_LIB=$ICU4_DIR/lib/libicuuc.dylib \
@@ -127,13 +121,12 @@ run_installation()
          case $KERNEL in
             Ubuntu|Debian)
                 echo "Check Dependecies for $KERNEL"
-                fail_check dpkg -s cmake cmake-curses-gui libgtest-dev libicu-dev protobuf-compiler libprotobuf-dev \
-                                   libboost-dev libboost-thread-dev libboost-system-dev
+                fail_check dpkg -s cmake cmake-curses-gui libgtest-dev libicu-dev protobuf-compiler libprotobuf-dev
                 install_libphonenumber
                 ;;
             CentOS|Amazon)
                 echo "Check Dependecies for $KERNEL"
-                fail_check rpm -q --dump cmake gtest-devel libicu-devel boost-devel protobuf-compiler protobuf-devel
+                fail_check rpm -q --dump cmake gtest-devel libicu-devel protobuf-compiler protobuf-devel
                 install_libphonenumber
                 ;;
             *)

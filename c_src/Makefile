@@ -17,7 +17,6 @@ ifeq ($(UNAME_SYS), darwin)
 				-L$(ICU4_ROOT)/lib \
 				-lphonenumber \
 				-lgeocoding \
-				-lboost_thread-mt \
 				-lstdc++ \
 				-framework CoreFoundation \
 				-Wl,-U,_enif_make_new_binary \
@@ -42,7 +41,6 @@ ifeq ($(UNAME_SYS), darwin)
 else
 	LDFLAGS +=  -l:libphonenumber.a \
 				-l:libgeocoding.a \
-				-lboost_thread \
 				-Wl,--start-group
 endif
 
@@ -79,8 +77,6 @@ LDFLAGS +=  -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build \
 			-labsl_time \
 			-labsl_time_zone \
 			-labsl_int128 \
-			-lboost_system \
-			-lboost_date_time \
 			-licui18n \
 			-licuuc \
 			-lprotobuf
