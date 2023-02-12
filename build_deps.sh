@@ -64,8 +64,6 @@ qmake_darwin()
       -DICU_UC_LIB=$ICU4_DIR/lib/libicuuc.dylib \
       -DICU_I18N_INCLUDE_DIR=$ICU4_DIR/include \
       -DICU_I18N_LIB=$ICU4_DIR/lib/libicui18n.dylib \
-      -DGTEST_SOURCE_DIR=../../../googletest/googletest/ \
-      -DGTEST_INCLUDE_DIR=../../../googletest/googletest/include/ \
       ..
 }
 
@@ -130,7 +128,7 @@ run_installation()
                 ;;
             CentOS|Amazon)
                 echo "Check Dependecies for $KERNEL"
-                fail_check rpm -q --dump cmake gtest-devel libicu-devel protobuf-compiler protobuf-devel
+                fail_check rpm -q --dump cmake libicu-devel protobuf-compiler protobuf-devel
                 install_libphonenumber
                 ;;
             *)
