@@ -25,20 +25,20 @@ consult as well the documentation from building `libphonenumber` located [here][
 On the latest versions it's enough to do:
 
 ```bash
-sudo apt-get install cmake cmake-curses-gui libgtest-dev libicu-dev 
+sudo apt-get install cmake cmake-curses-gui libicu-dev 
 sudo apt-get install libprotobuf-dev protobuf-compiler
 ```
 
 ##### CentOS 7
 
-Enable [EPEL][3] (for RE2 & gtest):
+Enable [EPEL][3] (for RE2):
 ```bash
 sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 ```
 
 And install packages:
 ```bash
-sudo yum install cmake git gtest-devel libicu-devel protobuf-devel protobuf-compiler
+sudo yum install cmake git libicu-devel protobuf-devel protobuf-compiler
 ```
 
 ##### Mac Os

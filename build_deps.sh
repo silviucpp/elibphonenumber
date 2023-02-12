@@ -40,6 +40,8 @@ qmake_unix()
         -DCMAKE_C_FLAGS="-fPIC" \
         -DCMAKE_CXX_FLAGS="-fPIC -std=c++11" \
         -DCMAKE_INSTALL_PREFIX:PATH=install \
+        -DBUILD_TESTING=OFF \
+        -DBUILD_SHARED_LIBS=OFF \
         -DUSE_BOOST=OFF \
         -USE_STDMUTEX=ON \
         ..
@@ -54,14 +56,14 @@ qmake_darwin()
 	fail_check cmake \
       -DCMAKE_CXX_FLAGS="-std=c++11 " \
       -DCMAKE_INSTALL_PREFIX:PATH=install \
+      -DBUILD_TESTING=OFF \
+      -DBUILD_SHARED_LIBS=OFF \
       -DUSE_BOOST=OFF \
       -USE_STDMUTEX=ON \
       -DICU_UC_INCLUDE_DIR=$ICU4_DIR/include \
       -DICU_UC_LIB=$ICU4_DIR/lib/libicuuc.dylib \
       -DICU_I18N_INCLUDE_DIR=$ICU4_DIR/include \
       -DICU_I18N_LIB=$ICU4_DIR/lib/libicui18n.dylib \
-      -DGTEST_SOURCE_DIR=../../../googletest/googletest/ \
-      -DGTEST_INCLUDE_DIR=../../../googletest/googletest/include/ \
       ..
 }
 
@@ -121,12 +123,12 @@ run_installation()
          case $KERNEL in
             Ubuntu|Debian)
                 echo "Check Dependecies for $KERNEL"
-                fail_check dpkg -s cmake cmake-curses-gui libgtest-dev libicu-dev protobuf-compiler libprotobuf-dev
+                fail_check dpkg -s cmake cmake-curses-gui libicu-dev protobuf-compiler libprotobuf-dev
                 install_libphonenumber
                 ;;
             CentOS|Amazon)
                 echo "Check Dependecies for $KERNEL"
-                fail_check rpm -q --dump cmake gtest-devel libicu-devel protobuf-compiler protobuf-devel
+                fail_check rpm -q --dump cmake libicu-devel protobuf-compiler protobuf-devel
                 install_libphonenumber
                 ;;
             *)
@@ -135,16 +137,7 @@ run_installation()
             ;;
       Darwin)
             brew install cmake pkg-config icu4c protobuf wget
-
-            fail_check git clone https://github.com/google/googletest.git
-            pushd googletest
-            fail_check git checkout 703bd9caab50b139428cea1aaff9974ebee5742e
-            popd
-
             install_libphonenumber
-            pushd ${DESTINATION}/cpp/build
-            rm -rf *.dylib
-            popd
             ;;
       *)
             echo "Your system $OS is not supported"

@@ -3,8 +3,6 @@ PROJECT_NIF_NAME=phonenumber_util_nif
 
 include nif.mk
 
-ABSEIL_BUILD_PATH := $(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-build/absl
-
 ifeq ($(UNAME_SYS), darwin)
 
 	ICU4_ROOT := $(shell brew --prefix icu4c)
@@ -45,18 +43,9 @@ else
 endif
 
 CXXFLAGS +=  -fPIC -g -Wextra -Werror -std=c++11 -fno-exceptions -Wno-unused-parameter -Wno-missing-field-initializers \
-			 -I $(BASEDIR)/_build/deps/libphonenumber/cpp/build/install/include \
-			 -I $(BASEDIR)/_build/deps/libphonenumber/cpp/build/_deps/abseil-cpp-src
+			 -I $(BASEDIR)/_build/deps/libphonenumber/cpp/build/install/include
 
-LDFLAGS +=  -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build \
-            -L$(ABSEIL_BUILD_PATH)/base \
-            -L$(ABSEIL_BUILD_PATH)/container \
-			-L$(ABSEIL_BUILD_PATH)/debugging \
-			-L$(ABSEIL_BUILD_PATH)/hash \
-			-L$(ABSEIL_BUILD_PATH)/strings \
-			-L$(ABSEIL_BUILD_PATH)/synchronization \
-			-L$(ABSEIL_BUILD_PATH)/time \
-			-L$(ABSEIL_BUILD_PATH)/numeric \
+LDFLAGS +=  -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/install/lib \
 			-labsl_base \
 			-labsl_spinlock_wait \
 			-labsl_malloc_internal \
