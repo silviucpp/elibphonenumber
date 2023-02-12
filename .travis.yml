@@ -31,7 +31,7 @@ matrix:
 before_script:
 
 - if [[ $TRAVIS_OS_NAME == linux ]]; then sudo apt-get -y update || true ; fi
-- if [[ $TRAVIS_OS_NAME == linux ]]; then sudo apt-get install -y cmake cmake-curses-gui libgtest-dev libicu-dev libprotobuf-dev protobuf-compiler || true ; fi
+- if [[ $TRAVIS_OS_NAME == linux ]]; then sudo apt-get install -y cmake cmake-curses-gui libicu-dev libprotobuf-dev protobuf-compiler || true ; fi
 - if [[ $TRAVIS_OS_NAME == osx ]]; then brew install erlang; fi
 
 - curl https://s3.amazonaws.com/rebar3/rebar3 --output rebar3 && chmod +x rebar3
