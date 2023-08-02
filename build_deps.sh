@@ -38,7 +38,7 @@ qmake_unix()
 {
 	fail_check cmake \
         -DCMAKE_C_FLAGS="-fPIC" \
-        -DCMAKE_CXX_FLAGS="-fPIC -std=c++17" \
+        -DCMAKE_CXX_FLAGS="-fPIC -std=c++11" \
         -DCMAKE_INSTALL_PREFIX:PATH=install \
         -DBUILD_TESTING=OFF \
         -DBUILD_SHARED_LIBS=OFF \
@@ -50,11 +50,12 @@ qmake_unix()
 qmake_darwin()
 {
     ICU4_DIR=$(brew --prefix icu4c)
+    PROTOBUF_DIR=$(brew --prefix protobuf@3)
 
     export PKG_CONFIG_PATH="$ICU4_DIR/lib/pkgconfig"
 
 	fail_check cmake \
-      -DCMAKE_CXX_FLAGS="-std=c++17" \
+      -DCMAKE_CXX_FLAGS="-std=c++11 -DNDEBUG" \
       -DCMAKE_INSTALL_PREFIX:PATH=install \
       -DBUILD_TESTING=OFF \
       -DBUILD_SHARED_LIBS=OFF \
@@ -64,6 +65,9 @@ qmake_darwin()
       -DICU_UC_LIB=$ICU4_DIR/lib/libicuuc.dylib \
       -DICU_I18N_INCLUDE_DIR=$ICU4_DIR/include \
       -DICU_I18N_LIB=$ICU4_DIR/lib/libicui18n.dylib \
+      -DPROTOBUF_INCLUDE_DIR=$PROTOBUF_DIR/include \
+      -DPROTOBUF_LIB=$PROTOBUF_DIR/lib \
+      -DPROTOC_BIN=$PROTOBUF_DIR/bin/protoc \
       ..
 }
 
@@ -136,7 +140,7 @@ run_installation()
          esac
             ;;
       Darwin)
-            brew install cmake pkg-config icu4c protobuf wget
+            brew install cmake pkg-config icu4c protobuf@3 wget
             install_libphonenumber
             ;;
       *)
