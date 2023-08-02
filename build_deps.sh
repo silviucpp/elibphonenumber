@@ -38,7 +38,7 @@ qmake_unix()
 {
 	fail_check cmake \
         -DCMAKE_C_FLAGS="-fPIC" \
-        -DCMAKE_CXX_FLAGS="-fPIC -std=c++11" \
+        -DCMAKE_CXX_FLAGS="-fPIC -std=c++17" \
         -DCMAKE_INSTALL_PREFIX:PATH=install \
         -DBUILD_TESTING=OFF \
         -DBUILD_SHARED_LIBS=OFF \
@@ -54,7 +54,7 @@ qmake_darwin()
     export PKG_CONFIG_PATH="$ICU4_DIR/lib/pkgconfig"
 
 	fail_check cmake \
-      -DCMAKE_CXX_FLAGS="-std=c++11 " \
+      -DCMAKE_CXX_FLAGS="-std=c++17" \
       -DCMAKE_INSTALL_PREFIX:PATH=install \
       -DBUILD_TESTING=OFF \
       -DBUILD_SHARED_LIBS=OFF \

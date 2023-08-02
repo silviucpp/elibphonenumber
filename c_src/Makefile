@@ -42,7 +42,7 @@ else
 				-Wl,--start-group
 endif
 
-CXXFLAGS +=  -fPIC -g -Wextra -Werror -std=c++11 -fno-exceptions -Wno-unused-parameter -Wno-missing-field-initializers \
+CXXFLAGS +=  -fPIC -g -Wextra -Werror -std=c++17 -fno-exceptions -Wno-unused-parameter -Wno-missing-field-initializers \
 			 -I $(BASEDIR)/_build/deps/libphonenumber/cpp/build/install/include
 
 LDFLAGS +=  -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/install/lib \
@@ -51,6 +51,8 @@ LDFLAGS +=  -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/install/lib \
 			-labsl_spinlock_wait \
 			-labsl_malloc_internal \
 			-labsl_throw_delegate \
+			-labsl_log_internal_check_op \
+			-labsl_log_internal_message \
 			-labsl_raw_logging_internal \
 			-labsl_hashtablez_sampler \
 			-labsl_raw_hash_set \
