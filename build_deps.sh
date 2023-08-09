@@ -8,7 +8,7 @@ if [ -f "$DEPS_LOCATION/$DESTINATION/cpp/build/libphonenumber.a" ]; then
     exit 0
 fi
 
-LIB_PHONE_NUMBER_ARCHIVE=https://github.com/google/libphonenumber/archive/$1.tar.gz
+LIB_PHONE_NUMBER_ARCHIVE=https://github.com/google/libphonenumber/archive/refs/tags/$1.tar.gz
 LIB_PHONE_NUMBER_REPO=https://github.com/googlei18n/libphonenumber.git
 LIB_PHONE_NUMBER_REV=$1
 
