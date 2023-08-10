@@ -59,7 +59,6 @@
 
 load_nif() ->
     SoName = elibphone_utils:get_priv_path(<<(atom_to_binary(?MODULE, latin1))/binary, "_nif">>),
-    io:format("Loading library: ~p ~n", [SoName]),
     ok = erlang:load_nif(SoName, 0).
 
 not_loaded(Line) ->
