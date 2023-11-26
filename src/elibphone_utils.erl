@@ -5,11 +5,20 @@
 -define(PLUS_SIGN_DIGIT, 43).
 
 -export([
+    get_env/2,
     get_priv_path/1,
     to_number_object/1,
     trim_plus_sign/1,
     append_plus_sign/1
 ]).
+
+get_env(Attr, Default) ->
+    case application:get_env(elibphonenumber, Attr) of
+        {ok, Value} ->
+            Value;
+        _ ->
+            Default
+    end.
 
 get_priv_path(File) ->
     case code:priv_dir(elibphonenumber) of

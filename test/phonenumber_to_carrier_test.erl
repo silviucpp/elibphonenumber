@@ -12,3 +12,7 @@ carrier_for_number_test() ->
 
     <<"Vodafone">> = phonenumber_to_carrier:carrier_for_number(<<"447436555511">>, <<"en">>),
     <<>> = phonenumber_to_carrier:carrier_for_number(<<"AAAA">>, <<"en">>).
+
+carrier_for_number_test_addon_test() ->
+    application:ensure_all_started(elibphonenumber),
+    ?assertEqual(<<"TelBru">>, phonenumber_to_carrier:carrier_for_number(<<"+6737412345">>, <<"en">>)).

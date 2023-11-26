@@ -1,6 +1,7 @@
 -module(phonenumber_to_carrier).
 
 -include("libphonenumber.hrl").
+-include_lib("kernel/include/logger.hrl").
 
 -behaviour(gen_server).
 
@@ -47,11 +48,13 @@ init([]) ->
     {ok, AllLanguages0} = file:list_dir(Path),
 
     AllLanguages = lists:map(fun(X) -> list_to_binary(X) end, AllLanguages0),
+    AdditionalPathsMap = elibphone_utils:get_env(additional_carriers_mapping, maps:new()),
 
     FunLang = fun(Lang, Acc) ->
         LangPath = <<Path/binary, "/", Lang/binary>>,
+        AdditionalMappingFiles = maps:get(Lang, AdditionalPathsMap, []),
 
-        case load_carrier_mapping(LangPath) of
+        case load_carrier_mapping([LangPath|AdditionalMappingFiles]) of
             {ok, Trie} ->
                 maps:put(Lang, Trie, Acc);
             _ ->
@@ -102,15 +105,13 @@ is_mobile(_) ->
     false.
 
 load_carrier_mapping(Path) ->
-    case file:list_dir(Path) of
+    case accumulate_files(Path, []) of
         {ok, AllFiles} ->
-            FunFile = fun(Filename, Acc) ->
-                FilenameBin = list_to_binary(Filename),
-                case binary:match(FilenameBin, <<".txt">>,[]) of
+            FunFile = fun(FilePath, Acc) ->
+                case binary:match(FilePath, <<".txt">>,[]) of
                     nomatch ->
                         Acc;
                     _ ->
-                        FilePath = <<Path/binary, "/", FilenameBin/binary>>,
                         {ok, Device} = file:open(FilePath, [read]),
                         get_lines(Device) ++ Acc
                 end
@@ -121,6 +122,23 @@ load_carrier_mapping(Path) ->
         _ ->
             false
     end.
+
+accumulate_files([H|T], Acc) ->
+    case filelib:is_dir(H) of
+        true ->
+            case file:list_dir(H) of
+                {ok, Files0} ->
+                    Files = lists:map(fun(P) -> <<H/binary, "/", (list_to_binary(P))/binary>> end, Files0),
+                    accumulate_files(T, Files++Acc);
+                Error ->
+                    ?LOG_ERROR("~p : failed to load files from: ~p with error: ~p", [?MODULE, H, Error]),
+                    Error
+            end;
+        _ ->
+            accumulate_files(T, [H| Acc])
+    end;
+accumulate_files([], Acc) ->
+    {ok, Acc}.
 
 get_lines(Device) ->
     get_lines(Device, []).
