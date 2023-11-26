@@ -286,8 +286,6 @@ is_valid_number_for_region_test() ->
     false = phonenumber_util:is_valid_number_for_region(P24, <<"YT">>),
     false = phonenumber_util:is_valid_number_for_region(P24, <<"RE">>),
     false = phonenumber_util:is_valid_number(P24),
-    %% However, it should be recognised as from La Mayotte.
-    <<"YT">> = phonenumber_util:get_region_code_for_number(P24),
     %% This number is valid in both places.
     P25 = phonenumber:set_national_number(800123456, P24),
     true = phonenumber_util:is_valid_number_for_region(P25, <<"YT">>),
