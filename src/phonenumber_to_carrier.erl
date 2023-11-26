@@ -48,8 +48,8 @@ init([]) ->
     {ok, AllLanguages0} = file:list_dir(Path),
 
     AllLanguages = lists:map(fun(X) -> list_to_binary(X) end, AllLanguages0),
-    AdditionalPathsMap = elibphone_utils:get_env(additional_carriers_mapping, maps:new()),
-
+    AdditionalPathsMap0 = elibphone_utils:get_env(additional_carriers_mapping, maps:new()),
+    AdditionalPathsMap = maps:map(fun(_, V0) -> lists:map(fun(V) -> case V of {M, F, A} -> erlang:apply(M, F, A); _ -> V end end, V0) end, AdditionalPathsMap0),
     FunLang = fun(Lang, Acc) ->
         LangPath = <<Path/binary, "/", Lang/binary>>,
         AdditionalMappingFiles = maps:get(Lang, AdditionalPathsMap, []),
