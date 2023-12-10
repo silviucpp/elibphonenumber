@@ -7,7 +7,7 @@
     {applications, [
         kernel,
         stdlib,
-        trie
+        etrie
     ]},
     {mod, {elibphonenumber, []}},
     {env, []},

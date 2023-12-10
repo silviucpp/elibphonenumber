@@ -67,7 +67,7 @@ init([]) ->
 handle_call({carrier_for_number, Number, Lang}, _From, #state {carrier_maps = Maps} = State) ->
     Carrier = case maps:find(Lang, Maps) of
         {ok, Trie} ->
-            case btrie:find_prefix_longest(Number, Trie) of
+            case etrie:longest_prefix(Trie, Number) of
                 {ok, _Prefix, C} ->
                     C;
                 _ ->
@@ -118,7 +118,7 @@ load_carrier_mapping(Path) ->
             end,
 
             AllMappings = lists:foldl(FunFile, [], AllFiles),
-            {ok, btrie:new(AllMappings)};
+            etrie:from_list(AllMappings);
         _ ->
             false
     end.

@@ -49,7 +49,7 @@ init([]) ->
     {ok, #state{timezones_trie = TimezonesMapping}}.
 
 handle_call({timezones_for_number, Prefix}, _From, #state {timezones_trie = TimezonesTrie} = State) ->
-    case btrie:find_prefix_longest(Prefix, TimezonesTrie) of
+    case etrie:longest_prefix(TimezonesTrie, Prefix) of
         {ok, _Prefix, C} ->
             {reply, {ok, C}, State};
         _ ->
@@ -83,7 +83,7 @@ get_prefix(Number) ->
 
 load_timezones_mapping(FilePath) ->
     {ok, Device} = file:open(FilePath, [read]),
-    {ok, btrie:new(get_lines(Device))}.
+    etrie:from_list(get_lines(Device)).
 
 get_lines(Device) ->
     get_lines(Device, []).
