@@ -140,7 +140,7 @@ run_installation()
          esac
             ;;
       Darwin)
-            brew install cmake pkg-config icu4c protobuf@3 wget
+            HOMEBREW_NO_AUTO_UPDATE=1 brew install cmake pkg-config icu4c protobuf@3 wget
             install_libphonenumber
             ;;
       *)
