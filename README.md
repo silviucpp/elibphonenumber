@@ -1,6 +1,6 @@
 elibphonenumber
 ===============
-[![Build Status](https://travis-ci.com/silviucpp/elibphonenumber.svg?branch=master)](https://travis-ci.com//github/silviucpp/elibphonenumber)
+[![Build Status](https://app.travis-ci.com/silviucpp/elibphonenumber.svg?branch=master)](https://travis-ci.com//github/silviucpp/elibphonenumber)
 [![GitHub](https://img.shields.io/github/license/silviucpp/elibphonenumber)](https://github.com/silviucpp/elibphonenumber/blob/master/LICENSE)
 [![Hex.pm](https://img.shields.io/hexpm/v/elibphonenumber)](https://hex.pm/packages/elibphonenumber)
 
