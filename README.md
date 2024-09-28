@@ -53,6 +53,7 @@ You can use `ccache` to speed up the compilation:
 
 ```erlang
 os:putenv("ELIBPHONENUMBER_USE_CCACHE", "1"),
+Config.
 ```
 
 ## Get Carrier for a Number
