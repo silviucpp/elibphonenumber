@@ -67,7 +67,7 @@ qmake_unix() {
 
 qmake_darwin() {
     local ICU4_DIR=$(brew --prefix icu4c)
-    local PROTOBUF_DIR=$(brew --prefix protobuf@3)
+    local PROTOBUF_DIR=$(brew --prefix protobuf@3.6)
 
     export PKG_CONFIG_PATH="$ICU4_DIR/lib/pkgconfig"
 
