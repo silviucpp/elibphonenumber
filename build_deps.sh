@@ -67,7 +67,7 @@ qmake_unix() {
 
 qmake_darwin() {
     local ICU4_DIR=$(brew --prefix icu4c)
-    local PROTOBUF_DIR=$(brew --prefix protobuf@3.6)
+    local PROTOBUF_DIR=$(brew --prefix protobuf@3)
 
     export PKG_CONFIG_PATH="$ICU4_DIR/lib/pkgconfig"
 
@@ -163,7 +163,7 @@ run_installation() {
             export HOMEBREW_NO_INSTALL_UPGRADE=true
             export HOMEBREW_NO_INSTALL_CLEANUP=true
             export HOMEBREW_NO_AUTO_UPDATE=1
-            brew install cmake pkg-config icu4c protobuf@3.6 wget
+            brew install cmake pkg-config icu4c protobuf@3 wget
             install_libphonenumber
             ;;
         *)

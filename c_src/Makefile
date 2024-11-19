@@ -6,7 +6,7 @@ include nif.mk
 ifeq ($(UNAME_SYS), darwin)
 
 	ICU4_ROOT := $(shell brew --prefix icu4c)
-    PROTOBUF_ROOT := $(shell brew --prefix protobuf@3.6)
+    PROTOBUF_ROOT := $(shell brew --prefix protobuf@3)
 
 	CXXFLAGS += -I$(PROTOBUF_ROOT)/include \
 				-I$(ICU4_ROOT)/include
