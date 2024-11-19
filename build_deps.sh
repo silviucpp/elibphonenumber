@@ -8,8 +8,9 @@ if [ -f "${DEPS_LOCATION}/${DESTINATION}/cpp/build/libphonenumber.a" ]; then
     exit 0
 fi
 
-LIB_PHONE_NUMBER_ARCHIVE=https://github.com/google/libphonenumber/archive/refs/tags/$1.tar.gz
-LIB_PHONE_NUMBER_REPO=https://github.com/googlei18n/libphonenumber.git
+GITHUB_REPO=https://github.com/silviucpp/libphonenumber
+LIB_PHONE_NUMBER_ARCHIVE=${GITHUB_REPO}/archive/refs/tags/$1.tar.gz
+LIB_PHONE_NUMBER_REPO=${GITHUB_REPO}.git
 LIB_PHONE_NUMBER_REV=$1
 
 DRIVER_SRC="git"
@@ -103,11 +104,13 @@ install_libphonenumber() {
         fail_check git checkout "${LIB_PHONE_NUMBER_REV}"
         popd || exit
     elif [ "${DRIVER_SRC}" = "archive" ]; then
-        echo "Building from Git archive"
-        fail_check wget -q -O libphonenumber.tar.gz "$LIB_PHONE_NUMBER_ARCHIVE"
-        fail_check tar -xf libphonenumber.tar.gz
-        fail_check rm libphonenumber.tar.gz
-        fail_check mv "libphonenumber-${ARCHIVE_VER}" "${DESTINATION}"
+        echo "Building from Git archive: ${LIB_PHONE_NUMBER_ARCHIVE}"
+        if [ ! -d "${DESTINATION}" ]; then
+            fail_check wget -q -O libphonenumber.tar.gz "$LIB_PHONE_NUMBER_ARCHIVE"
+            fail_check tar -xf libphonenumber.tar.gz
+            fail_check rm libphonenumber.tar.gz
+            fail_check mv "libphonenumber-${ARCHIVE_VER}" "${DESTINATION}"
+        fi
     fi;
 
     mkdir -p "${DESTINATION}/cpp/build"
