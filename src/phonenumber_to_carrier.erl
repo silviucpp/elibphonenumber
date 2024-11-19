@@ -138,7 +138,7 @@ accumulate_files([H|T], Acc) ->
             accumulate_files(T, [H| Acc])
     end;
 accumulate_files([], Acc) ->
-    {ok, Acc}.
+    {ok, lists:reverse(Acc)}.
 
 get_lines(Device) ->
     get_lines(Device, []).

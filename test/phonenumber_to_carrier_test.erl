@@ -15,4 +15,5 @@ carrier_for_number_test() ->
 
 carrier_for_number_test_addon_test() ->
     application:ensure_all_started(elibphonenumber),
-    ?assertEqual(<<"NotExisting">>, phonenumber_to_carrier:carrier_for_number(<<"+6737512345">>, <<"en">>)).
+    ?assertEqual(<<"NotExisting">>, phonenumber_to_carrier:carrier_for_number(<<"+6737512345">>, <<"en">>)),
+    ?assertEqual(<<"Override">>, phonenumber_to_carrier:carrier_for_number(<<"+6738912345">>, <<"en">>)).
