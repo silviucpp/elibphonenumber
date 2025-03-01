@@ -8,7 +8,7 @@ if [ -f "${DEPS_LOCATION}/${DESTINATION}/cpp/build/libphonenumber.a" ]; then
     exit 0
 fi
 
-GITHUB_REPO=https://github.com/silviucpp/libphonenumber
+GITHUB_REPO=https://github.com/google/libphonenumber
 LIB_PHONE_NUMBER_ARCHIVE=${GITHUB_REPO}/archive/refs/tags/$1.tar.gz
 LIB_PHONE_NUMBER_REPO=${GITHUB_REPO}.git
 LIB_PHONE_NUMBER_REV=$1
@@ -50,7 +50,7 @@ fi
 qmake_unix() {
     local cmake_args=(
         -DCMAKE_C_FLAGS="-fPIC"
-        -DCMAKE_CXX_FLAGS="-fPIC -std=c++11"
+        -DCMAKE_CXX_FLAGS="-fPIC -std=c++17"
         -DCMAKE_INSTALL_PREFIX:PATH=install
         -DBUILD_TESTING=OFF
         -DBUILD_SHARED_LIBS=OFF
@@ -73,7 +73,7 @@ qmake_darwin() {
     export PKG_CONFIG_PATH="$ICU4_DIR/lib/pkgconfig"
 
     local cmake_args=(
-        -DCMAKE_CXX_FLAGS="-std=c++11 -DNDEBUG"
+        -DCMAKE_CXX_FLAGS="-std=c++17 -DNDEBUG"
         -DCMAKE_INSTALL_PREFIX:PATH=install
         -DBUILD_TESTING=OFF
         -DBUILD_SHARED_LIBS=OFF

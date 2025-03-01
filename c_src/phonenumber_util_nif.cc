@@ -1167,7 +1167,7 @@ static ERL_NIF_TERM ParseAndKeepRawInput_nif(ErlNifEnv* env, int argc, const ERL
         return enif_make_badarg(env);
 
     PhoneNumber phoneNumber;
-    PhoneNumberUtil::GetInstance()->ParseAndKeepRawInput(absl::string_view(number_to_parse.data(), number_to_parse.size()), region_code, &phoneNumber);
+    PhoneNumberUtil::GetInstance()->ParseAndKeepRawInput(number_to_parse, region_code, &phoneNumber);
     return phonenumber_to_term(env, phoneNumber);
 }
 
