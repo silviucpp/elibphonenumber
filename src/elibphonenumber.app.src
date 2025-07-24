@@ -2,7 +2,7 @@
     {description, "Erlang driver for libphonenumber."},
     {licenses, ["Apache"]},
     {links,[{"Github","https://github.com/silviucpp/elibphonenumber"}]},
-    {vsn, "8.13.55"},
+    {vsn, "9.0.10"},
     {registered, []},
     {applications, [
         kernel,
