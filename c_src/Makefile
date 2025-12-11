@@ -47,7 +47,6 @@ CXXFLAGS +=  -fPIC -g -Wextra -Werror -std=c++17 -fno-exceptions -Wno-unused-par
 
 LDFLAGS +=  -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/install/lib \
 			-labsl_base \
-			-labsl_bad_optional_access \
 			-labsl_spinlock_wait \
 			-labsl_malloc_internal \
 			-labsl_throw_delegate \
@@ -60,7 +59,6 @@ LDFLAGS +=  -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/install/lib \
 			-labsl_demangle_internal \
 			-labsl_city \
 			-labsl_hash \
-			-labsl_low_level_hash \
 			-labsl_strings \
 			-labsl_synchronization \
 			-labsl_graphcycles_internal \
