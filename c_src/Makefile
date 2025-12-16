@@ -47,6 +47,8 @@ CXXFLAGS += -fPIC -g -Wextra -Werror -std=c++17 -fno-exceptions \
             -Wno-unused-parameter -Wno-missing-field-initializers \
             -I $(BASEDIR)/_build/deps/libphonenumber/cpp/build/install/include
 
+LDFLAGS += -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/install/lib
+
 ifeq ($(wildcard $(ABSEIL_ROOT)/lib/libabsl_*.dylib),)
     # Brew Abseil not found -> use local
     ABSL_LIB_DIR := $(BASEDIR)/_build/deps/libphonenumber/cpp/build/install/lib
@@ -61,5 +63,8 @@ else
     LDFLAGS += $(patsubst $(ABSL_LIB_DIR)/lib%.dylib,-l%, $(ABSL_LIBS))
 endif
 
-LDFLAGS += -L$(BASEDIR)/_build/deps/libphonenumber/cpp/build/install/lib
+ifneq ($(UNAME_SYS), darwin)
+    LDFLAGS += -Wl,--end-group
+endif
+
 LDFLAGS += -licui18n -licuuc -lprotobuf
