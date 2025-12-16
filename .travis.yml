@@ -27,4 +27,4 @@ script:
   - ./rebar3 compile
 
 after_success:
-  - ./rebar3 eunit
+  - ./rebar3 eunit || (echo "Eunit failed" && exit 1)
